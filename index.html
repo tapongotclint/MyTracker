@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expense Tracker</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#3498db">
+<style>
+body{font-family:Arial,sans-serif;background:#f4f6f9;padding:20px;max-width:900px;margin:auto}
+.card{background:#fff;padding:16px;border-radius:12px;margin:12px 0;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+input,select,button{padding:10px;margin:5px;width:100%}
+</style>
+</head>
+<body>
+<h1>💰 Expense Tracker</h1>
+<div class="card">
+<label>Monthly Salary</label>
+<input id="salary" type="number" value="18000">
+<button onclick="saveSalary()">Save Salary</button>
+</div>
+<div class="card">
+<h3>Add Expense</h3>
+<input id="desc" placeholder="Description">
+<input id="amt" type="number" placeholder="Amount">
+<button onclick="addExpense()">Add Expense</button>
+</div>
+<div class="card">
+<h3>Expenses</h3>
+<ul id="list"></ul>
+</div>
+<script>
+let expenses=JSON.parse(localStorage.getItem('expenses')||'[]');
+function render(){
+document.getElementById('list').innerHTML=expenses.map(e=>`<li>${e.desc} - ₱${e.amt}</li>`).join('');
+}
+function addExpense(){
+expenses.push({desc:desc.value,amt:amt.value});
+localStorage.setItem('expenses',JSON.stringify(expenses));
+desc.value='';amt.value='';render();
+}
+function saveSalary(){localStorage.setItem('salary',salary.value);}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('./service-worker.js');}
+render();
+</script>
+</body>
+</html>
